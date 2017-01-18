@@ -3,6 +3,7 @@ package br.com.techne.lyceum.api.rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.techne.lyceum.api.rest.Curso;
+import techne.lyceum.aonline.wap.servico.ServicoWAP;
 
 @RestController
 public class CursoController {
 
+	@Autowired
+	ServicoWAP servicoWAP;
+	
 	private List<Curso> lista = new ArrayList<Curso>();
-
-	/*@Autowired
-	ServicoWAP servicoWAP;*/
 
 	@RequestMapping(value = "/cursos", method = RequestMethod.GET)
 	public ResponseEntity<List<Curso>> listar() {
