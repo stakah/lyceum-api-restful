@@ -11,14 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import br.com.techne.lyceum.api.rest.Curso;
+import techne.data.DataMap;
 import techne.lyceum.aonline.wap.servico.ServicoWAP;
+import techne.lyceum.nucleo.modelo.Aluno;
 
 @RestController
 public class CursoController {
 
 	@Autowired
 	ServicoWAP servicoWAP;
-	
+
 	private List<Curso> lista = new ArrayList<Curso>();
 
 	@RequestMapping(value = "/cursos", method = RequestMethod.GET)
@@ -53,21 +55,28 @@ public class CursoController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	/*
-	 * @RequestMapping(value = "/alunos", method = RequestMethod.GET) public
-	 * List<Aluno> alunos() {
-	 * 
-	 * List<DataMap> listaAlunosMap = servicoWAP.buscarAlunosRelacionados((long)
-	 * 1);
-	 * 
-	 * if (listaAlunosMap == null || listaAlunosMap.isEmpty()) { return new
-	 * ArrayList<Aluno>(); } else { List<Aluno> listaAlunos = new
-	 * ArrayList<Aluno>(); for (DataMap alunoMap : listaAlunosMap) {
-	 * listaAlunos.add(mapearAlunoMapParaAluno(alunoMap)); } return listaAlunos;
-	 * } }
-	 * 
-	 * private static Aluno mapearAlunoMapParaAluno(DataMap alunoMap) { if
-	 * (alunoMap == null) return null; Aluno aluno = new Aluno();
-	 * aluno.setCodAluno(alunoMap.getString("codigoAluno")); return aluno; }
-	 */
+	@RequestMapping(value = "/alunos", method = RequestMethod.GET)
+	public List<Aluno> alunos() {
+
+		List<DataMap> listaAlunosMap = servicoWAP.buscarAlunosRelacionados((long) 1);
+
+		if (listaAlunosMap == null || listaAlunosMap.isEmpty()) {
+			return new ArrayList<Aluno>();
+		} else {
+			List<Aluno> listaAlunos = new ArrayList<Aluno>();
+			for (DataMap alunoMap : listaAlunosMap) {
+				listaAlunos.add(mapearAlunoMapParaAluno(alunoMap));
+			}
+			return listaAlunos;
+		}
+	}
+
+	private static Aluno mapearAlunoMapParaAluno(DataMap alunoMap) {
+		if (alunoMap == null)
+			return null;
+		Aluno aluno = new Aluno();
+		aluno.setCodAluno(alunoMap.getString("codigoAluno"));
+		return aluno;
+	}
+
 }
